@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soda La Esquina · Menú</title>
+<meta name="description" content="Desayunos, almuerzos y bebidas. Armá tu pedido y enviálo por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F6F8F4;
+    --card: #FFFFFF;
+    --ink: #17261E;
+    --ink-soft: #56655C;
+    --hoja: #17694A;
+    --hoja-dark: #0F4A34;
+    --hoja-tint: #E3F0E9;
+    --sol: #FFC53D;
+    --tomate: #D8432B;
+    --tomate-dark: #B93420;
+    --line: #DFE6DF;
+    --radius: 14px;
+    --display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Figtree", system-ui, sans-serif; font-size: 1.0625rem; line-height: 1.5;
+  }
+  h1, h2, h3 { margin: 0; }
+  button, input, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--hoja); outline-offset: 2px; }
+  [hidden] { display: none !important; }
+  svg.ico { width: 1.5em; height: 1.5em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  /* ---------- Portada ---------- */
+  .hero { background: var(--hoja); color: #fff; padding: 2.5rem 1.25rem 3.25rem; }
+  .hero-in { max-width: 1080px; margin: 0 auto; }
+  .hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2.5rem, 9vw, 4.75rem); line-height: .95; letter-spacing: -0.02em; }
+  .hero p { margin: 0.9rem 0 0; font-size: 1.15rem; max-width: 30ch; color: #D6EBDF; }
+
+  /* ---------- Navegación de categorías ---------- */
+  .cats { position: sticky; top: 0; z-index: 5; background: rgba(246,248,244,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .cats-in { max-width: 1080px; margin: 0 auto; padding: 0.6rem 1.25rem; display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; }
+  .cats-in::-webkit-scrollbar { display: none; }
+  .cats a {
+    display: inline-flex; align-items: center; gap: 0.5rem; white-space: nowrap;
+    min-height: 44px; padding: 0 1rem 0 0.8rem; border-radius: 999px;
+    background: #fff; border: 1.5px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 700;
+  }
+  .cats a:hover { border-color: var(--hoja); color: var(--hoja-dark); }
+
+  /* ---------- Estructura ---------- */
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 1.25rem 6rem; display: grid; gap: 2.5rem; }
+  @media (min-width: 960px) { .wrap { grid-template-columns: minmax(0, 1fr) 370px; align-items: start; padding-bottom: 3rem; } }
+
+  .menu-section + .menu-section { margin-top: 3rem; }
+  .sec-head { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.1rem; }
+  .sec-badge { width: 52px; height: 52px; border-radius: 16px; background: var(--sol); color: var(--ink); display: grid; place-items: center; flex: none; }
+  .sec-badge svg.ico { width: 30px; height: 30px; }
+  .sec-head h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 4.6vw, 2.15rem); line-height: 1.05; letter-spacing: -0.01em; }
+
+  /* ---------- Tarjetas de producto ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; }
+  .thumb { position: relative; aspect-ratio: 16 / 10; background: var(--hoja-tint); color: var(--hoja); display: grid; place-items: center; }
+  .thumb .ph { width: 44px; height: 44px; opacity: .55; }
+  .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .card-body { padding: 0.9rem 1rem 1rem; display: flex; flex-direction: column; flex: 1; }
+  .card h3 { font-family: var(--display); font-weight: 600; font-size: 1.2rem; line-height: 1.2; }
+  .desc { margin: 0.3rem 0 0; color: var(--ink-soft); font-size: 0.96rem; }
+  .price { margin-top: auto; padding-top: 0.7rem; font-weight: 800; font-size: 1.3rem; }
+  .actions { margin-top: 0.7rem; display: flex; align-items: center; gap: 0.6rem; }
+
+  .stepper { display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 999px; background: #fff; flex: none; }
+  .stepper button { width: 40px; height: 44px; border: 0; background: transparent; font-size: 1.3rem; font-weight: 700; line-height: 1; cursor: pointer; border-radius: 999px; }
+  .stepper button:hover { background: var(--hoja-tint); }
+  .stepper output { min-width: 1.6rem; text-align: center; font-weight: 700; }
+
+  .btn { min-height: 46px; padding: 0 1.1rem; border: 0; background: var(--tomate); color: #fff; font-weight: 700; border-radius: 999px; cursor: pointer; transition: background-color .15s, transform .1s; }
+  .actions .btn { flex: 1; }
+  .btn:hover { background: var(--tomate-dark); }
+  .btn:active { transform: translateY(1px); }
+  .btn.added { background: var(--hoja); }
+  .btn:disabled { background: #D5DCD5; color: #75837A; cursor: not-allowed; }
+  .btn-wa { background: #1B8F4B; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 52px; }
+  .btn-wa:hover { background: #14713A; }
+
+  /* ---------- Pedido ---------- */
+  .cart { background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(23,38,30,.08); }
+  @media (min-width: 960px) { .cart { position: sticky; top: 76px; max-height: calc(100vh - 92px); overflow-y: auto; } }
+  .cart h2 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; }
+  .cart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+  .cart-close { display: none; border: 0; background: transparent; font-size: 1.8rem; width: 44px; height: 44px; cursor: pointer; }
+  .cart-empty { color: var(--ink-soft); margin: 1rem 0; }
+  .cart-list { list-style: none; margin: 0; padding: 0; }
+  .cart-item { padding: 0.8rem 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.75rem; }
+  .cart-item .n { font-weight: 600; }
+  .cart-item .p { font-weight: 700; }
+  .cart-item .ctrl { grid-column: 1 / -1; display: flex; align-items: center; gap: 0.5rem; }
+  .mini { width: 36px; height: 36px; border: 1.5px solid var(--line); background: #fff; border-radius: 999px; font-weight: 700; cursor: pointer; }
+  .mini:hover { background: var(--hoja-tint); }
+  .remove { margin-left: auto; border: 0; background: transparent; color: var(--tomate); font-weight: 600; text-decoration: underline; cursor: pointer; min-height: 36px; }
+  .total { display: flex; justify-content: space-between; align-items: baseline; margin: 1rem 0; font-size: 1.15rem; }
+  .total strong { font-size: 1.8rem; font-family: var(--display); font-weight: 800; }
+  .field { display: block; margin-bottom: 0.8rem; font-weight: 600; font-size: 0.95rem; }
+  .field input, .field textarea { display: block; width: 100%; margin-top: 0.3rem; border: 1.5px solid var(--line); border-radius: 12px; padding: 0.65rem 0.8rem; background: var(--bg); font-weight: 400; }
+  .field textarea { resize: vertical; min-height: 64px; }
+  .field input.invalid, .field textarea.invalid { border-color: var(--tomate); }
+  .hint { font-size: 0.9rem; color: var(--ink-soft); margin: 0.6rem 0 0; }
+  .error { margin: 0 0 0.8rem; color: var(--tomate); font-weight: 600; font-size: 0.95rem; }
+
+  .group-label { font-weight: 600; font-size: 0.95rem; margin: 0 0 0.3rem; }
+  .seg { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 0.5rem; margin-bottom: 0.9rem; }
+  .seg label { position: relative; display: block; }
+  .seg input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: pointer; }
+  .seg span { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 50px; padding: 0.3rem 0.5rem; border: 1.5px solid var(--line); border-radius: 12px; background: #fff; font-weight: 700; line-height: 1.2; }
+  .seg input:checked + span { background: var(--hoja); border-color: var(--hoja); color: #fff; }
+  .seg input:focus-visible + span { outline: 3px solid var(--hoja); outline-offset: 2px; }
+
+  /* ---------- Barra móvil ---------- */
+  .bar { display: none; }
+  .backdrop { display: none; }
+  @media (max-width: 959px) {
+    .cart { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; max-height: 88vh; overflow-y: auto; border-radius: 22px 22px 0 0; border-bottom: 0; transform: translateY(105%); visibility: hidden; transition: transform .25s ease, visibility 0s .25s; }
+    .cart.open { transform: none; visibility: visible; transition: transform .25s ease; }
+    .cart-close { display: block; }
+    .backdrop.show { display: block; position: fixed; inset: 0; background: rgba(23,38,30,.5); z-index: 20; }
+    .bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom)); background: var(--ink); color: #fff; align-items: center; justify-content: space-between; gap: 1rem; }
+    .bar button { background: var(--sol); color: var(--ink); border: 0; border-radius: 999px; min-height: 46px; padding: 0 1.3rem; font-weight: 700; cursor: pointer; }
+    .bar span { font-weight: 600; }
+  }
+
+  footer { text-align: center; padding: 0 1.25rem 7rem; color: var(--ink-soft); font-size: 0.95rem; }
+  @media (min-width: 960px) { footer { padding-bottom: 2rem; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <h1>Soda La Esquina</h1>
+    <p>Armá tu pedido y mandalo por WhatsApp.</p>
+  </div>
+</header>
+
+<nav class="cats" aria-label="Categorías del menú">
+  <div class="cats-in" id="cats"></div>
+</nav>
+
+<div class="wrap">
+  <main id="menu" aria-label="Menú"></main>
+
+  <aside class="cart" id="cart" aria-labelledby="cart-title">
+    <div class="cart-head">
+      <h2 id="cart-title">Tu pedido</h2>
+      <button class="cart-close" id="cart-close" aria-label="Cerrar pedido">×</button>
+    </div>
+    <p class="cart-empty" id="cart-empty">Tu pedido está vacío. Elegí un plato del menú.</p>
+    <ul class="cart-list" id="cart-list"></ul>
+    <div class="total"><span>Total</span><strong id="cart-total">₡0</strong></div>
+
+    <label class="field">Tu nombre
+      <input type="text" id="cust-name" autocomplete="name" placeholder="Para identificar tu pedido" required>
+    </label>
+
+    <p class="group-label" id="lbl-entrega">¿Cómo querés tu pedido?</p>
+    <div class="seg" role="radiogroup" aria-labelledby="lbl-entrega">
+      <label><input type="radio" name="entrega" value="recoger" checked><span>Pasar a recoger</span></label>
+      <label><input type="radio" name="entrega" value="domicilio"><span>Envío a domicilio</span></label>
+    </div>
+    <label class="field" id="addr-wrap" hidden>Dirección de entrega
+      <textarea id="cust-address" autocomplete="street-address" placeholder="Provincia, cantón, distrito y señas" required></textarea>
+    </label>
+
+    <p class="group-label" id="lbl-pago">Método de pago</p>
+    <div class="seg" role="radiogroup" aria-labelledby="lbl-pago">
+      <label><input type="radio" name="pago" value="Efectivo" checked><span>Efectivo</span></label>
+      <label><input type="radio" name="pago" value="SINPE Móvil"><span>SINPE Móvil</span></label>
+      <label><input type="radio" name="pago" value="Tarjeta"><span>Tarjeta</span></label>
+    </div>
+
+    <label class="field">Notas (opcional)
+      <textarea id="cust-notes" placeholder="Ej: sin natilla, para llevar"></textarea>
+    </label>
+    <button class="btn btn-wa" id="send" disabled>Enviar pedido por WhatsApp</button>
+    <p class="error" id="form-error" role="alert" hidden></p>
+    <p class="hint">Se abre WhatsApp con el mensaje listo. Solo tenés que enviarlo.</p>
+  </aside>
+</div>
+
+<footer>Soda La Esquina</footer>
+
+<div class="bar" id="bar">
+  <span id="bar-summary">Pedido vacío</span>
+  <button id="bar-open" aria-expanded="false" aria-controls="cart">Ver pedido</button>
+</div>
+<div class="backdrop" id="backdrop"></div>
+
+<script>
+/* ============ CONFIGURACIÓN: editá estos datos ============ */
+// Número de WhatsApp con código de país, sin + ni espacios (506 = Costa Rica).
+const WHATSAPP = "50663783156";
+
+const ICONS = {
+  // amanecer
+  sunrise: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 18a5.5 5.5 0 0 1 11 0"/><path d="M3 18h18M8 21.5h8M12 6v2.5M5.6 10.6l1.6 1.6M18.4 10.6l-1.6 1.6M3 14.5h2M19 14.5h2"/></svg>',
+  // plato con cubiertos (mediodía / almuerzo)
+  plate: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg>',
+  // vaso con pajilla
+  glass: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10l-1.2 12a2 2 0 0 1-2 1.8h-3.6a2 2 0 0 1-2-1.8L7 7z"/><path d="M7.7 12.5h8.6M13.5 7l1.8-4.5h2"/></svg>'
+};
+
+const SECTIONS = [
+  { id: "desayunos", title: "Desayunos y comidas rápidas", short: "Desayunos", icon: "sunrise" },
+  { id: "almuerzos", title: "Almuerzos",                    short: "Almuerzos", icon: "plate" },
+  { id: "bebidas",   title: "Bebidas",                      short: "Bebidas",   icon: "glass" }
+];
+
+/* Cada producto puede llevar una foto: poné el archivo en la carpeta "img"
+   junto a este HTML con el nombre indicado en "img". Si no existe, se muestra un ícono. */
+const MENU = [
+  // Desayunos y comidas rápidas
+  { id: "empanada-queso",  section: "desayunos", name: "Empanada de queso", desc: "", price: 1500, img: "img/empanada-queso.jpg" },
+  { id: "pinto",           section: "desayunos", name: "Pinto",             desc: "Gallo pinto con huevo y salchichón.", price: 1500, img: "img/pinto.jpg" },
+  { id: "arreglada",       section: "desayunos", name: "Arreglada",         desc: "", price: 1500, img: "img/arreglada.jpg" },
+  { id: "tortilla-queso",  section: "desayunos", name: "Tortilla de queso", desc: "", price: 1500, img: "img/tortilla-queso.jpg" },
+  { id: "chorreada",       section: "desayunos", name: "Chorreada",         desc: "", price: 1500, img: "img/chorreada.jpg" },
+  { id: "sandwich-pollo",  section: "desayunos", name: "Sándwich de pollo", desc: "", price: 2000, img: "img/sandwich-pollo.jpg" },
+  { id: "sandwich-carne",  section: "desayunos", name: "Sándwich de carne", desc: "", price: 2000, img: "img/sandwich-carne.jpg" },
+
+  // Almuerzos
+  { id: "casado-chuleta",  section: "almuerzos", name: "Casado con chuleta",                   desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-chuleta.jpg" },
+  { id: "casado-bistec",   section: "almuerzos", name: "Casado con bistec",                    desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-bistec.jpg" },
+  { id: "casado-pescado",  section: "almuerzos", name: "Casado con filete de pescado empanizado", desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-pescado.jpg" },
+  { id: "casado-salsa",    section: "almuerzos", name: "Casado con carne en salsa",            desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-salsa.jpg" },
+  { id: "casado-fajitas",  section: "almuerzos", name: "Casado con fajitas de pollo",          desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-fajitas.jpg" },
+  { id: "plato-del-dia",   section: "almuerzos", name: "Plato del día",                        desc: "", price: 4000, img: "img/plato-del-dia.jpg" },
+
+  // Bebidas
+  { id: "fresco-natural",  section: "bebidas", name: "Fresco natural",  desc: "", price: 600,  img: "img/fresco-natural.jpg" },
+  { id: "cafe-negro",      section: "bebidas", name: "Café negro",      desc: "", price: 600,  img: "img/cafe-negro.jpg" },
+  { id: "cafe-leche",      section: "bebidas", name: "Café con leche",  desc: "", price: 800,  img: "img/cafe-leche.jpg" },
+  { id: "agua-dulce",      section: "bebidas", name: "Agua dulce",      desc: "", price: 800,  img: "img/agua-dulce.jpg" },
+  { id: "jugo-naranja",    section: "bebidas", name: "Jugo de naranja", desc: "", price: 1000, img: "img/jugo-naranja.jpg" }
+];
+/* =========================================================== */
+
+const $ = (s) => document.querySelector(s);
+const byId = Object.fromEntries(MENU.map(m => [m.id, m]));
+const fmt = (n) => "₡" + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+let picks = {};   // cantidad elegida en cada tarjeta antes de agregar
+let cart = {};    // id -> cantidad
+
+try { cart = JSON.parse(localStorage.getItem("soda-cart") || "{}"); } catch (e) { cart = {}; }
+Object.keys(cart).forEach(k => { if (!byId[k] || !(cart[k] > 0)) delete cart[k]; });
+const save = () => { try { localStorage.setItem("soda-cart", JSON.stringify(cart)); } catch (e) {} };
+
+/* ---------- Menú ---------- */
+function renderMenu() {
+  $("#cats").innerHTML = SECTIONS.map(s =>
+    `<a href="#sec-${s.id}">${ICONS[s.icon]}<span>${s.short}</span></a>`).join("");
+
+  $("#menu").innerHTML = SECTIONS.map(sec => `
+    <section class="menu-section" id="sec-${sec.id}" aria-labelledby="h-${sec.id}">
+      <div class="sec-head">
+        <span class="sec-badge">${ICONS[sec.icon]}</span>
+        <h2 id="h-${sec.id}">${sec.title}</h2>
+      </div>
+      <div class="grid">
+        ${MENU.filter(m => m.section === sec.id).map(m => `
+          <article class="card" data-id="${m.id}">
+            <div class="thumb">
+              ${ICONS[sec.icon].replace('class="ico"', 'class="ico ph"')}
+              ${m.img ? `<img src="${m.img}" alt="${m.name}" loading="lazy" onerror="this.remove()">` : ""}
+            </div>
+            <div class="card-body">
+              <h3>${m.name}</h3>
+              ${m.desc ? `<p class="desc">${m.desc}</p>` : ""}
+              <div class="price">${fmt(m.price)}</div>
+              <div class="actions">
+                <div class="stepper" role="group" aria-label="Cantidad de ${m.name}">
+                  <button type="button" data-act="dec" aria-label="Quitar una">−</button>
+                  <output data-qty aria-live="polite">1</output>
+                  <button type="button" data-act="inc" aria-label="Sumar una">+</button>
+                </div>
+                <button type="button" class="btn" data-act="add">Agregar</button>
+              </div>
+            </div>
+          </article>`).join("")}
+      </div>
+    </section>`).join("");
+}
+
+$("#menu").addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-act]");
+  if (!btn) return;
+  const card = btn.closest(".card");
+  const id = card.dataset.id;
+  const qtyEl = card.querySelector("[data-qty]");
+  let q = picks[id] || 1;
+
+  if (btn.dataset.act === "inc") q = Math.min(q + 1, 20);
+  if (btn.dataset.act === "dec") q = Math.max(q - 1, 1);
+  if (btn.dataset.act === "add") {
+    cart[id] = Math.min((cart[id] || 0) + q, 99);
+    save(); renderCart();
+    btn.classList.add("added");
+    btn.textContent = `Agregado (${q})`;
+    q = 1;
+    setTimeout(() => { btn.classList.remove("added"); btn.textContent = "Agregar"; }, 1400);
+  }
+  picks[id] = q;
+  qtyEl.textContent = q;
+});
+
+/* ---------- Carrito ---------- */
+function totals() {
+  let count = 0, sum = 0;
+  for (const [id, q] of Object.entries(cart)) { count += q; sum += q * byId[id].price; }
+  return { count, sum };
+}
+
+function renderCart() {
+  const ids = Object.keys(cart);
+  const { count, sum } = totals();
+  $("#cart-empty").hidden = ids.length > 0;
+  $("#cart-list").innerHTML = ids.map(id => {
+    const m = byId[id], q = cart[id];
+    return `<li class="cart-item" data-id="${id}">
+      <span class="n">${m.name}</span>
+      <span class="p">${fmt(m.price * q)}</span>
+      <div class="ctrl">
+        <button class="mini" data-c="dec" aria-label="Quitar una de ${m.name}">−</button>
+        <span aria-label="Cantidad">${q}</span>
+        <button class="mini" data-c="inc" aria-label="Sumar una de ${m.name}">+</button>
+        <button class="remove" data-c="rm">Quitar</button>
+      </div>
+    </li>`;
+  }).join("");
+  $("#cart-total").textContent = fmt(sum);
+  $("#send").disabled = count === 0;
+  $("#bar-summary").textContent = count ? `${count} ${count === 1 ? "plato" : "platos"} · ${fmt(sum)}` : "Pedido vacío";
+}
+
+$("#cart-list").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-c]");
+  if (!b) return;
+  const id = b.closest(".cart-item").dataset.id;
+  if (b.dataset.c === "inc") cart[id] = Math.min(cart[id] + 1, 99);
+  if (b.dataset.c === "dec") { cart[id] -= 1; if (cart[id] <= 0) delete cart[id]; }
+  if (b.dataset.c === "rm") delete cart[id];
+  save(); renderCart();
+});
+
+/* ---------- Hoja del pedido en móvil ---------- */
+const cartEl = $("#cart");
+function openCart(open) {
+  cartEl.classList.toggle("open", open);
+  $("#backdrop").classList.toggle("show", open);
+  $("#bar-open").setAttribute("aria-expanded", String(open));
+  if (open) $("#cart-close").focus(); else $("#bar-open").focus({ preventScroll: true });
+}
+$("#bar-open").addEventListener("click", () => openCart(true));
+$("#cart-close").addEventListener("click", () => openCart(false));
+$("#backdrop").addEventListener("click", () => openCart(false));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && cartEl.classList.contains("open")) openCart(false); });
+
+/* ---------- WhatsApp ---------- */
+const ENTREGA = { recoger: "Pasar a recoger", domicilio: "Envío a domicilio" };
+function pick(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : "";
+}
+
+function buildMessage() {
+  const name = $("#cust-name").value.trim();
+  const notes = $("#cust-notes").value.trim();
+  const modo = pick("entrega") === "domicilio" ? "domicilio" : "recoger";
+  const address = $("#cust-address").value.trim();
+  const lines = ["Hola, quiero hacer este pedido:", ""];
+
+  lines.push(`*Nombre:* ${name}`);
+  lines.push(`*Entrega:* ${ENTREGA[modo]}`);
+  if (modo === "domicilio") lines.push(`*Dirección:* ${address}`);
+  lines.push("");
+
+  SECTIONS.forEach(sec => {
+    const items = MENU.filter(m => m.section === sec.id && cart[m.id]);
+    if (!items.length) return;
+    lines.push(`*${sec.title}*`);
+    items.forEach(m => lines.push(`• ${cart[m.id]} x ${m.name} — ${fmt(m.price * cart[m.id])}`));
+    lines.push("");
+  });
+
+  lines.push(`*Total: ${fmt(totals().sum)}*`);
+  lines.push("", `*Pago:* ${pick("pago") || "Efectivo"}`);
+  if (notes) lines.push(`*Notas:* ${notes}`);
+  return lines.join("\n");
+}
+
+function showError(msg, field) {
+  const box = $("#form-error");
+  box.textContent = msg;
+  box.hidden = false;
+  document.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+  if (field) { field.classList.add("invalid"); field.focus(); }
+}
+function clearError() {
+  $("#form-error").hidden = true;
+  document.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+}
+
+document.querySelectorAll('input[name="entrega"]').forEach(r => r.addEventListener("change", () => {
+  $("#addr-wrap").hidden = pick("entrega") !== "domicilio";
+  clearError();
+}));
+["#cust-name", "#cust-address"].forEach(s => $(s).addEventListener("input", clearError));
+
+$("#send").addEventListener("click", () => {
+  if (!totals().count) return;
+  if (!$("#cust-name").value.trim()) {
+    return showError("Escribí tu nombre para enviar el pedido.", $("#cust-name"));
+  }
+  if (pick("entrega") === "domicilio" && !$("#cust-address").value.trim()) {
+    return showError("Escribí la dirección de entrega.", $("#cust-address"));
+  }
+  clearError();
+  const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(buildMessage())}`;
+  window.open(url, "_blank", "noopener");
+});
+
+renderMenu();
+renderCart();
+</script>
+</body>
+</html>
