@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soda La Esquina · Pintos y casados</title>
+<meta name="description" content="Menú de pintos y casados. Elegí tus platos y enviá el pedido por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FFFBF0;
+    --cafe: #3A2316;
+    --cafe-soft: #6B4A38;
+    --platano: #F4C430;
+    --tomate: #C23B2A;
+    --hoja: #2E6A4C;
+    --hoja-dark: #1F4A35;
+    --line: #E4D6BC;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--cafe);
+    font-family: "Figtree", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
+  h1, h2, h3 { margin: 0; font-weight: 400; }
+  button, input, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--hoja); outline-offset: 2px; }
+
+  /* ---------- Encabezado: rótulo + borde de mantel ---------- */
+  .sign {
+    background: var(--platano);
+    padding: 2.25rem 1.25rem 2rem;
+    text-align: center;
+  }
+  .sign h1 {
+    font-family: "Alfa Slab One", serif;
+    font-size: clamp(2.4rem, 8vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+  .sign p {
+    margin: 0.75rem auto 0;
+    max-width: 34ch;
+    font-weight: 600;
+    font-size: 1.15rem;
+  }
+  .tablecloth {
+    height: 30px;
+    background-color: #fff;
+    background-image:
+      linear-gradient(90deg, rgba(194,59,42,.6) 50%, transparent 50%),
+      linear-gradient(rgba(194,59,42,.6) 50%, transparent 50%);
+    background-size: 30px 30px;
+    border-bottom: 3px solid var(--tomate);
+  }
+
+  /* ---------- Estructura ---------- */
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 6rem;
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 900px) {
+    .wrap { grid-template-columns: minmax(0, 1fr) 360px; align-items: start; padding-bottom: 3rem; }
+  }
+
+  .menu-section + .menu-section { margin-top: 3rem; }
+  .menu-section > h2 {
+    font-family: "Alfa Slab One", serif;
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    color: var(--hoja-dark);
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid var(--hoja);
+    margin-bottom: 0.25rem;
+  }
+  .section-note { margin: 0.5rem 0 0; color: var(--cafe-soft); }
+
+  /* ---------- Platos ---------- */
+  .dish { padding: 1.4rem 0; border-bottom: 1px solid var(--line); }
+  .dish-head { display: flex; align-items: baseline; gap: 0.6rem; }
+  .dish-name { font-size: 1.35rem; font-weight: 700; }
+  .leader { flex: 1; border-bottom: 2px dotted var(--cafe-soft); transform: translateY(-4px); min-width: 1rem; }
+  .dish-price { font-weight: 700; font-size: 1.25rem; white-space: nowrap; }
+  .dish-desc { margin: 0.25rem 0 0; color: var(--cafe-soft); max-width: 52ch; }
+  .dish-actions { margin-top: 0.9rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+
+  .stepper {
+    display: inline-flex;
+    align-items: center;
+    border: 2px solid var(--cafe);
+    border-radius: var(--radius);
+    background: #fff;
+  }
+  .stepper button {
+    width: 44px; height: 44px;
+    border: 0; background: transparent;
+    font-size: 1.4rem; font-weight: 700; line-height: 1;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  .stepper button:hover { background: #F7EBCB; }
+  .stepper output { min-width: 2.2rem; text-align: center; font-weight: 700; font-size: 1.15rem; }
+
+  .btn {
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border: 2px solid var(--tomate);
+    background: var(--tomate);
+    color: #fff;
+    font-weight: 700;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background-color .15s, transform .1s;
+  }
+  .btn:hover { background: #A62F20; border-color: #A62F20; }
+  .btn:active { transform: translateY(1px); }
+  .btn.added { background: var(--hoja); border-color: var(--hoja); }
+  .btn:disabled { background: #D9CFC0; border-color: #D9CFC0; color: #7a6a5b; cursor: not-allowed; }
+  .btn-wa { background: #1B8F4B; border-color: #1B8F4B; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .6rem; }
+  .btn-wa:hover { background: #14713A; border-color: #14713A; }
+
+  /* ---------- Carrito ---------- */
+  .cart {
+    background: #fff;
+    border: 2px solid var(--cafe);
+    border-radius: 14px;
+    padding: 1.25rem;
+  }
+  @media (min-width: 900px) { .cart { position: sticky; top: 1.25rem; } }
+  .cart h2 { font-family: "Alfa Slab One", serif; font-size: 1.6rem; }
+  .cart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  .cart-close { display: none; border: 0; background: transparent; font-size: 1.8rem; width: 44px; height: 44px; cursor: pointer; }
+  .cart-empty { color: var(--cafe-soft); margin: 1rem 0; }
+  .cart-list { list-style: none; margin: 0; padding: 0; }
+  .cart-item { padding: 0.8rem 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.75rem; }
+  .cart-item .n { font-weight: 600; }
+  .cart-item .p { font-weight: 700; }
+  .cart-item .ctrl { grid-column: 1 / -1; display: flex; align-items: center; gap: 0.5rem; }
+  .mini { width: 36px; height: 36px; border: 2px solid var(--cafe); background: #fff; border-radius: 8px; font-weight: 700; cursor: pointer; }
+  .mini:hover { background: #F7EBCB; }
+  .remove { margin-left: auto; border: 0; background: transparent; color: var(--tomate); font-weight: 600; text-decoration: underline; cursor: pointer; min-height: 36px; }
+  .total { display: flex; justify-content: space-between; align-items: baseline; margin: 1rem 0; font-size: 1.2rem; }
+  .total strong { font-size: 1.7rem; font-family: "Alfa Slab One", serif; font-weight: 400; }
+  .field { display: block; margin-bottom: 0.8rem; font-weight: 600; font-size: 0.95rem; }
+  .field input, .field textarea {
+    display: block; width: 100%; margin-top: 0.3rem;
+    border: 2px solid var(--line); border-radius: 8px; padding: 0.6rem 0.75rem; background: var(--paper);
+    font-weight: 400;
+  }
+  .field textarea { resize: vertical; min-height: 64px; }
+  .hint { font-size: 0.9rem; color: var(--cafe-soft); margin: 0.6rem 0 0; }
+  [hidden] { display: none !important; }
+
+  /* Botones de opción (entrega y pago) */
+  .group-label { font-weight: 600; font-size: 0.95rem; margin: 0 0 0.3rem; }
+  .seg { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 0.5rem; margin-bottom: 0.9rem; }
+  .seg label { position: relative; display: block; }
+  .seg input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: pointer; }
+  .seg span {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    min-height: 50px; padding: 0.3rem 0.5rem;
+    border: 2px solid var(--cafe); border-radius: var(--radius); background: #fff;
+    font-weight: 700; line-height: 1.2;
+  }
+  .seg input:checked + span { background: var(--hoja); border-color: var(--hoja); color: #fff; }
+  .seg input:focus-visible + span { outline: 3px solid var(--hoja); outline-offset: 2px; }
+  .field input.invalid, .field textarea.invalid { border-color: var(--tomate); }
+  .error { margin: 0 0 0.8rem; color: var(--tomate); font-weight: 600; font-size: 0.95rem; }
+
+  /* ---------- Barra móvil ---------- */
+  .bar { display: none; }
+  .backdrop { display: none; }
+  @media (max-width: 899px) {
+    .cart {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+      max-height: 88vh; overflow-y: auto;
+      border-radius: 18px 18px 0 0; border-bottom: 0;
+      transform: translateY(105%);
+      visibility: hidden;
+      transition: transform .25s ease, visibility 0s .25s;
+    }
+    .cart.open { transform: none; visibility: visible; transition: transform .25s ease; }
+    .cart-close { display: block; }
+    .backdrop.show { display: block; position: fixed; inset: 0; background: rgba(58,35,22,.5); z-index: 20; }
+    .bar {
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+      padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+      background: var(--cafe); color: #fff; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .bar button { background: var(--platano); color: var(--cafe); border: 0; border-radius: var(--radius); min-height: 46px; padding: 0 1.2rem; font-weight: 700; cursor: pointer; }
+    .bar span { font-weight: 600; }
+  }
+
+  footer { text-align: center; padding: 0 1.25rem 7rem; color: var(--cafe-soft); font-size: 0.95rem; }
+  @media (min-width: 900px) { footer { padding-bottom: 2rem; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="sign">
+    <h1>Soda La Esquina</h1>
+    <p>Pintos y casados. Armá tu pedido y mandalo por WhatsApp.</p>
+  </div>
+  <div class="tablecloth" aria-hidden="true"></div>
+</header>
+
+<div class="wrap">
+  <main id="menu" aria-label="Menú"></main>
+
+  <aside class="cart" id="cart" aria-labelledby="cart-title">
+    <div class="cart-head">
+      <h2 id="cart-title">Tu pedido</h2>
+      <button class="cart-close" id="cart-close" aria-label="Cerrar pedido">×</button>
+    </div>
+    <p class="cart-empty" id="cart-empty">Tu pedido está vacío. Elegí un plato del menú.</p>
+    <ul class="cart-list" id="cart-list"></ul>
+    <div class="total"><span>Total</span><strong id="cart-total">₡0</strong></div>
+    <label class="field">Tu nombre
+      <input type="text" id="cust-name" autocomplete="name" placeholder="Para identificar tu pedido" required>
+    </label>
+
+    <p class="group-label" id="lbl-entrega">¿Cómo querés tu pedido?</p>
+    <div class="seg" role="radiogroup" aria-labelledby="lbl-entrega">
+      <label><input type="radio" name="entrega" value="recoger" checked><span>Pasar a recoger</span></label>
+      <label><input type="radio" name="entrega" value="domicilio"><span>Envío a domicilio</span></label>
+    </div>
+    <label class="field" id="addr-wrap" hidden>Dirección de entrega
+      <textarea id="cust-address" autocomplete="street-address" placeholder="Provincia, cantón, distrito y señas" required></textarea>
+    </label>
+
+    <p class="group-label" id="lbl-pago">Método de pago</p>
+    <div class="seg" role="radiogroup" aria-labelledby="lbl-pago">
+      <label><input type="radio" name="pago" value="Efectivo" checked><span>Efectivo</span></label>
+      <label><input type="radio" name="pago" value="SINPE Móvil"><span>SINPE Móvil</span></label>
+      <label><input type="radio" name="pago" value="Tarjeta"><span>Tarjeta</span></label>
+    </div>
+
+    <label class="field">Notas (opcional)
+      <textarea id="cust-notes" placeholder="Ej: sin natilla, para llevar"></textarea>
+    </label>
+    <button class="btn btn-wa" id="send" disabled>Enviar pedido por WhatsApp</button>
+    <p class="error" id="form-error" role="alert" hidden></p>
+    <p class="hint">Se abre WhatsApp con el mensaje listo. Solo tenés que enviarlo.</p>
+  </aside>
+</div>
+
+<footer>Soda La Esquina</footer>
+
+<div class="bar" id="bar">
+  <span id="bar-summary">Pedido vacío</span>
+  <button id="bar-open" aria-expanded="false" aria-controls="cart">Ver pedido</button>
+</div>
+<div class="backdrop" id="backdrop"></div>
+
+<script>
+/* ============ CONFIGURACIÓN: editá estos datos ============ */
+// Número de WhatsApp con código de país, sin + ni espacios (506 = Costa Rica).
+const WHATSAPP = "50663783156";
+
+const SECTIONS = [
+  { id: "pintos",  title: "Pintos",  note: "Gallo pinto con su acompañamiento." },
+  { id: "casados", title: "Casados", note: "Arroz, frijoles y ensalada con la proteína que elijás." }
+];
+
+const MENU = [
+  { id: "pinto-basico", section: "pintos", name: "Pinto básico",
+    desc: "Huevo y salchichón.", price: 1500 },
+  { id: "pinto-grande", section: "pintos", name: "Pinto grande",
+    desc: "Dos huevos, natilla, plátano maduro, salchichón y café.", price: 3000 },
+  // Precio de los casados: ajustalo al real (aquí está en 3500 como ejemplo).
+  { id: "casado-pollo",  section: "casados", name: "Casado con pollo",        desc: "Arroz, frijoles, ensalada y pollo.",        price: 3500 },
+  { id: "casado-pescado",section: "casados", name: "Casado con pescado",      desc: "Arroz, frijoles, ensalada y pescado.",      price: 3500 },
+  { id: "casado-mechada",section: "casados", name: "Casado con carne mechada",desc: "Arroz, frijoles, ensalada y carne mechada.",price: 3500 },
+  { id: "casado-chuleta",section: "casados", name: "Casado con chuleta",      desc: "Arroz, frijoles, ensalada y chuleta.",      price: 3500 }
+];
+/* =========================================================== */
+
+const $ = (s) => document.querySelector(s);
+const byId = Object.fromEntries(MENU.map(m => [m.id, m]));
+const fmt = (n) => "₡" + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+let picks = {};   // cantidad elegida en cada tarjeta antes de agregar
+let cart = {};    // id -> cantidad
+
+try { cart = JSON.parse(localStorage.getItem("soda-cart") || "{}"); } catch (e) { cart = {}; }
+Object.keys(cart).forEach(k => { if (!byId[k] || !(cart[k] > 0)) delete cart[k]; });
+const save = () => { try { localStorage.setItem("soda-cart", JSON.stringify(cart)); } catch (e) {} };
+
+/* ---------- Menú ---------- */
+function renderMenu() {
+  $("#menu").innerHTML = SECTIONS.map(sec => `
+    <section class="menu-section" aria-labelledby="h-${sec.id}">
+      <h2 id="h-${sec.id}">${sec.title}</h2>
+      <p class="section-note">${sec.note}</p>
+      ${MENU.filter(m => m.section === sec.id).map(m => `
+        <article class="dish" data-id="${m.id}">
+          <div class="dish-head">
+            <h3 class="dish-name">${m.name}</h3>
+            <span class="leader" aria-hidden="true"></span>
+            <span class="dish-price">${fmt(m.price)}</span>
+          </div>
+          <p class="dish-desc">${m.desc}</p>
+          <div class="dish-actions">
+            <div class="stepper" role="group" aria-label="Cantidad de ${m.name}">
+              <button type="button" data-act="dec" aria-label="Quitar una">−</button>
+              <output data-qty aria-live="polite">1</output>
+              <button type="button" data-act="inc" aria-label="Sumar una">+</button>
+            </div>
+            <button type="button" class="btn" data-act="add">Agregar al pedido</button>
+          </div>
+        </article>`).join("")}
+    </section>`).join("");
+}
+
+$("#menu").addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-act]");
+  if (!btn) return;
+  const card = btn.closest(".dish");
+  const id = card.dataset.id;
+  const qtyEl = card.querySelector("[data-qty]");
+  let q = picks[id] || 1;
+
+  if (btn.dataset.act === "inc") q = Math.min(q + 1, 20);
+  if (btn.dataset.act === "dec") q = Math.max(q - 1, 1);
+  if (btn.dataset.act === "add") {
+    cart[id] = Math.min((cart[id] || 0) + q, 99);
+    save(); renderCart();
+    btn.classList.add("added");
+    btn.textContent = `Agregado (${q})`;
+    q = 1;
+    setTimeout(() => { btn.classList.remove("added"); btn.textContent = "Agregar al pedido"; }, 1400);
+  }
+  picks[id] = q;
+  qtyEl.textContent = q;
+});
+
+/* ---------- Carrito ---------- */
+function totals() {
+  let count = 0, sum = 0;
+  for (const [id, q] of Object.entries(cart)) { count += q; sum += q * byId[id].price; }
+  return { count, sum };
+}
+
+function renderCart() {
+  const ids = Object.keys(cart);
+  const { count, sum } = totals();
+  $("#cart-empty").hidden = ids.length > 0;
+  $("#cart-list").innerHTML = ids.map(id => {
+    const m = byId[id], q = cart[id];
+    return `<li class="cart-item" data-id="${id}">
+      <span class="n">${m.name}</span>
+      <span class="p">${fmt(m.price * q)}</span>
+      <div class="ctrl">
+        <button class="mini" data-c="dec" aria-label="Quitar una de ${m.name}">−</button>
+        <span aria-label="Cantidad">${q}</span>
+        <button class="mini" data-c="inc" aria-label="Sumar una de ${m.name}">+</button>
+        <button class="remove" data-c="rm">Quitar</button>
+      </div>
+    </li>`;
+  }).join("");
+  $("#cart-total").textContent = fmt(sum);
+  $("#send").disabled = count === 0;
+  $("#bar-summary").textContent = count ? `${count} ${count === 1 ? "plato" : "platos"} · ${fmt(sum)}` : "Pedido vacío";
+}
+
+$("#cart-list").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-c]");
+  if (!b) return;
+  const id = b.closest(".cart-item").dataset.id;
+  if (b.dataset.c === "inc") cart[id] = Math.min(cart[id] + 1, 99);
+  if (b.dataset.c === "dec") { cart[id] -= 1; if (cart[id] <= 0) delete cart[id]; }
+  if (b.dataset.c === "rm") delete cart[id];
+  save(); renderCart();
+});
+
+/* ---------- Hoja del pedido en móvil ---------- */
+const cartEl = $("#cart");
+function openCart(open) {
+  cartEl.classList.toggle("open", open);
+  $("#backdrop").classList.toggle("show", open);
+  $("#bar-open").setAttribute("aria-expanded", String(open));
+  if (open) $("#cart-close").focus(); else $("#bar-open").focus({ preventScroll: true });
+}
+$("#bar-open").addEventListener("click", () => openCart(true));
+$("#cart-close").addEventListener("click", () => openCart(false));
+$("#backdrop").addEventListener("click", () => openCart(false));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && cartEl.classList.contains("open")) openCart(false); });
+
+/* ---------- WhatsApp ---------- */
+const ENTREGA = { recoger: "Pasar a recoger", domicilio: "Envío a domicilio" };
+function pick(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : "";
+}
+
+function buildMessage() {
+  const name = $("#cust-name").value.trim();
+  const notes = $("#cust-notes").value.trim();
+  const modo = pick("entrega") === "domicilio" ? "domicilio" : "recoger";
+  const address = $("#cust-address").value.trim();
+  const lines = ["Hola, quiero hacer este pedido:", ""];
+
+  lines.push(`*Nombre:* ${name}`);
+  lines.push(`*Entrega:* ${ENTREGA[modo]}`);
+  if (modo === "domicilio") lines.push(`*Dirección:* ${address}`);
+  lines.push("");
+
+  SECTIONS.forEach(sec => {
+    const items = MENU.filter(m => m.section === sec.id && cart[m.id]);
+    if (!items.length) return;
+    lines.push(`*${sec.title}*`);
+    items.forEach(m => lines.push(`• ${cart[m.id]} x ${m.name} — ${fmt(m.price * cart[m.id])}`));
+    lines.push("");
+  });
+
+  lines.push(`*Total: ${fmt(totals().sum)}*`);
+  lines.push("", `*Pago:* ${pick("pago") || "Efectivo"}`);
+  if (notes) lines.push(`*Notas:* ${notes}`);
+  return lines.join("\n");
+}
+
+function showError(msg, field) {
+  const box = $("#form-error");
+  box.textContent = msg;
+  box.hidden = false;
+  document.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+  if (field) { field.classList.add("invalid"); field.focus(); }
+}
+function clearError() {
+  $("#form-error").hidden = true;
+  document.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+}
+
+document.querySelectorAll('input[name="entrega"]').forEach(r => r.addEventListener("change", () => {
+  $("#addr-wrap").hidden = pick("entrega") !== "domicilio";
+  clearError();
+}));
+["#cust-name", "#cust-address"].forEach(s => $(s).addEventListener("input", clearError));
+
+$("#send").addEventListener("click", () => {
+  if (!totals().count) return;
+  if (!$("#cust-name").value.trim()) {
+    return showError("Escribí tu nombre para enviar el pedido.", $("#cust-name"));
+  }
+  if (pick("entrega") === "domicilio" && !$("#cust-address").value.trim()) {
+    return showError("Escribí la dirección de entrega.", $("#cust-address"));
+  }
+  clearError();
+  const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(buildMessage())}`;
+  window.open(url, "_blank", "noopener");
+});
+
+renderMenu();
+renderCart();
+</script>
+</body>
+</html>
