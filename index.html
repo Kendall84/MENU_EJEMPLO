@@ -3,221 +3,154 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Soda La Esquina · Pintos y casados</title>
-<meta name="description" content="Menú de pintos y casados. Elegí tus platos y enviá el pedido por WhatsApp.">
+<title>Soda La Esquina · Menú</title>
+<meta name="description" content="Desayunos, almuerzos y bebidas. Armá tu pedido y enviálo por WhatsApp.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FFFBF0;
-    --cafe: #3A2316;
-    --cafe-soft: #6B4A38;
-    --platano: #F4C430;
-    --tomate: #C23B2A;
-    --hoja: #2E6A4C;
-    --hoja-dark: #1F4A35;
-    --line: #E4D6BC;
-    --radius: 10px;
+    --bg: #F6F8F4;
+    --card: #FFFFFF;
+    --ink: #17261E;
+    --ink-soft: #56655C;
+    --hoja: #17694A;
+    --hoja-dark: #0F4A34;
+    --hoja-tint: #E3F0E9;
+    --sol: #FFC53D;
+    --tomate: #D8432B;
+    --tomate-dark: #B93420;
+    --line: #DFE6DF;
+    --radius: 14px;
+    --display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 76px; }
   body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--cafe);
-    font-family: "Figtree", system-ui, sans-serif;
-    font-size: 1.0625rem;
-    line-height: 1.5;
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Figtree", system-ui, sans-serif; font-size: 1.0625rem; line-height: 1.5;
   }
-  h1, h2, h3 { margin: 0; font-weight: 400; }
+  h1, h2, h3 { margin: 0; }
   button, input, textarea { font: inherit; color: inherit; }
   :focus-visible { outline: 3px solid var(--hoja); outline-offset: 2px; }
+  [hidden] { display: none !important; }
+  svg.ico { width: 1.5em; height: 1.5em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 
-  /* ---------- Encabezado: rótulo + borde de mantel ---------- */
-  .sign {
-    background: var(--platano);
-    padding: 2.25rem 1.25rem 2rem;
-    text-align: center;
+  /* ---------- Portada ---------- */
+  .hero { background: var(--hoja); color: #fff; padding: 2.5rem 1.25rem 3.25rem; }
+  .hero-in { max-width: 1080px; margin: 0 auto; }
+  .hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2.5rem, 9vw, 4.75rem); line-height: .95; letter-spacing: -0.02em; }
+  .hero p { margin: 0.9rem 0 0; font-size: 1.15rem; max-width: 30ch; color: #D6EBDF; }
+
+  /* ---------- Navegación de categorías ---------- */
+  .cats { position: sticky; top: 0; z-index: 5; background: rgba(246,248,244,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .cats-in { max-width: 1080px; margin: 0 auto; padding: 0.6rem 1.25rem; display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; }
+  .cats-in::-webkit-scrollbar { display: none; }
+  .cats a {
+    display: inline-flex; align-items: center; gap: 0.5rem; white-space: nowrap;
+    min-height: 44px; padding: 0 1rem 0 0.8rem; border-radius: 999px;
+    background: #fff; border: 1.5px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 700;
   }
-  .sign h1 {
-    font-family: "Alfa Slab One", serif;
-    font-size: clamp(2.4rem, 8vw, 4.5rem);
-    line-height: 1;
-    letter-spacing: 0.01em;
-  }
-  .sign p {
-    margin: 0.75rem auto 0;
-    max-width: 34ch;
-    font-weight: 600;
-    font-size: 1.15rem;
-  }
-  .tablecloth {
-    height: 30px;
-    background-color: #fff;
-    background-image:
-      linear-gradient(90deg, rgba(194,59,42,.6) 50%, transparent 50%),
-      linear-gradient(rgba(194,59,42,.6) 50%, transparent 50%);
-    background-size: 30px 30px;
-    border-bottom: 3px solid var(--tomate);
-  }
+  .cats a:hover { border-color: var(--hoja); color: var(--hoja-dark); }
 
   /* ---------- Estructura ---------- */
-  .wrap {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 2rem 1.25rem 6rem;
-    display: grid;
-    gap: 2.5rem;
-  }
-  @media (min-width: 900px) {
-    .wrap { grid-template-columns: minmax(0, 1fr) 360px; align-items: start; padding-bottom: 3rem; }
-  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 1.25rem 6rem; display: grid; gap: 2.5rem; }
+  @media (min-width: 960px) { .wrap { grid-template-columns: minmax(0, 1fr) 370px; align-items: start; padding-bottom: 3rem; } }
 
   .menu-section + .menu-section { margin-top: 3rem; }
-  .menu-section > h2 {
-    font-family: "Alfa Slab One", serif;
-    font-size: clamp(1.9rem, 5vw, 2.6rem);
-    color: var(--hoja-dark);
-    padding-bottom: 0.4rem;
-    border-bottom: 3px solid var(--hoja);
-    margin-bottom: 0.25rem;
-  }
-  .section-note { margin: 0.5rem 0 0; color: var(--cafe-soft); }
+  .sec-head { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.1rem; }
+  .sec-badge { width: 52px; height: 52px; border-radius: 16px; background: var(--sol); color: var(--ink); display: grid; place-items: center; flex: none; }
+  .sec-badge svg.ico { width: 30px; height: 30px; }
+  .sec-head h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 4.6vw, 2.15rem); line-height: 1.05; letter-spacing: -0.01em; }
 
-  /* ---------- Platos ---------- */
-  .dish { padding: 1.4rem 0; border-bottom: 1px solid var(--line); }
-  .dish-head { display: flex; align-items: baseline; gap: 0.6rem; }
-  .dish-name { font-size: 1.35rem; font-weight: 700; }
-  .leader { flex: 1; border-bottom: 2px dotted var(--cafe-soft); transform: translateY(-4px); min-width: 1rem; }
-  .dish-price { font-weight: 700; font-size: 1.25rem; white-space: nowrap; }
-  .dish-desc { margin: 0.25rem 0 0; color: var(--cafe-soft); max-width: 52ch; }
-  .dish-actions { margin-top: 0.9rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+  /* ---------- Tarjetas de producto ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; }
+  .thumb { position: relative; aspect-ratio: 16 / 10; background: var(--hoja-tint); color: var(--hoja); display: grid; place-items: center; }
+  .thumb .ph { width: 44px; height: 44px; opacity: .55; }
+  .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .card-body { padding: 0.9rem 1rem 1rem; display: flex; flex-direction: column; flex: 1; }
+  .card h3 { font-family: var(--display); font-weight: 600; font-size: 1.2rem; line-height: 1.2; }
+  .desc { margin: 0.3rem 0 0; color: var(--ink-soft); font-size: 0.96rem; }
+  .price { margin-top: auto; padding-top: 0.7rem; font-weight: 800; font-size: 1.3rem; }
+  .actions { margin-top: 0.7rem; display: flex; align-items: center; gap: 0.6rem; }
 
-  .stepper {
-    display: inline-flex;
-    align-items: center;
-    border: 2px solid var(--cafe);
-    border-radius: var(--radius);
-    background: #fff;
-  }
-  .stepper button {
-    width: 44px; height: 44px;
-    border: 0; background: transparent;
-    font-size: 1.4rem; font-weight: 700; line-height: 1;
-    cursor: pointer;
-    border-radius: 8px;
-  }
-  .stepper button:hover { background: #F7EBCB; }
-  .stepper output { min-width: 2.2rem; text-align: center; font-weight: 700; font-size: 1.15rem; }
+  .stepper { display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 999px; background: #fff; flex: none; }
+  .stepper button { width: 40px; height: 44px; border: 0; background: transparent; font-size: 1.3rem; font-weight: 700; line-height: 1; cursor: pointer; border-radius: 999px; }
+  .stepper button:hover { background: var(--hoja-tint); }
+  .stepper output { min-width: 1.6rem; text-align: center; font-weight: 700; }
 
-  .btn {
-    min-height: 48px;
-    padding: 0 1.4rem;
-    border: 2px solid var(--tomate);
-    background: var(--tomate);
-    color: #fff;
-    font-weight: 700;
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: background-color .15s, transform .1s;
-  }
-  .btn:hover { background: #A62F20; border-color: #A62F20; }
+  .btn { min-height: 46px; padding: 0 1.1rem; border: 0; background: var(--tomate); color: #fff; font-weight: 700; border-radius: 999px; cursor: pointer; transition: background-color .15s, transform .1s; }
+  .actions .btn { flex: 1; }
+  .btn:hover { background: var(--tomate-dark); }
   .btn:active { transform: translateY(1px); }
-  .btn.added { background: var(--hoja); border-color: var(--hoja); }
-  .btn:disabled { background: #D9CFC0; border-color: #D9CFC0; color: #7a6a5b; cursor: not-allowed; }
-  .btn-wa { background: #1B8F4B; border-color: #1B8F4B; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .6rem; }
-  .btn-wa:hover { background: #14713A; border-color: #14713A; }
+  .btn.added { background: var(--hoja); }
+  .btn:disabled { background: #D5DCD5; color: #75837A; cursor: not-allowed; }
+  .btn-wa { background: #1B8F4B; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 52px; }
+  .btn-wa:hover { background: #14713A; }
 
-  /* ---------- Carrito ---------- */
-  .cart {
-    background: #fff;
-    border: 2px solid var(--cafe);
-    border-radius: 14px;
-    padding: 1.25rem;
-  }
-  @media (min-width: 900px) { .cart { position: sticky; top: 1.25rem; } }
-  .cart h2 { font-family: "Alfa Slab One", serif; font-size: 1.6rem; }
-  .cart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  /* ---------- Pedido ---------- */
+  .cart { background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(23,38,30,.08); }
+  @media (min-width: 960px) { .cart { position: sticky; top: 76px; max-height: calc(100vh - 92px); overflow-y: auto; } }
+  .cart h2 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; }
+  .cart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
   .cart-close { display: none; border: 0; background: transparent; font-size: 1.8rem; width: 44px; height: 44px; cursor: pointer; }
-  .cart-empty { color: var(--cafe-soft); margin: 1rem 0; }
+  .cart-empty { color: var(--ink-soft); margin: 1rem 0; }
   .cart-list { list-style: none; margin: 0; padding: 0; }
   .cart-item { padding: 0.8rem 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.75rem; }
   .cart-item .n { font-weight: 600; }
   .cart-item .p { font-weight: 700; }
   .cart-item .ctrl { grid-column: 1 / -1; display: flex; align-items: center; gap: 0.5rem; }
-  .mini { width: 36px; height: 36px; border: 2px solid var(--cafe); background: #fff; border-radius: 8px; font-weight: 700; cursor: pointer; }
-  .mini:hover { background: #F7EBCB; }
+  .mini { width: 36px; height: 36px; border: 1.5px solid var(--line); background: #fff; border-radius: 999px; font-weight: 700; cursor: pointer; }
+  .mini:hover { background: var(--hoja-tint); }
   .remove { margin-left: auto; border: 0; background: transparent; color: var(--tomate); font-weight: 600; text-decoration: underline; cursor: pointer; min-height: 36px; }
-  .total { display: flex; justify-content: space-between; align-items: baseline; margin: 1rem 0; font-size: 1.2rem; }
-  .total strong { font-size: 1.7rem; font-family: "Alfa Slab One", serif; font-weight: 400; }
+  .total { display: flex; justify-content: space-between; align-items: baseline; margin: 1rem 0; font-size: 1.15rem; }
+  .total strong { font-size: 1.8rem; font-family: var(--display); font-weight: 800; }
   .field { display: block; margin-bottom: 0.8rem; font-weight: 600; font-size: 0.95rem; }
-  .field input, .field textarea {
-    display: block; width: 100%; margin-top: 0.3rem;
-    border: 2px solid var(--line); border-radius: 8px; padding: 0.6rem 0.75rem; background: var(--paper);
-    font-weight: 400;
-  }
+  .field input, .field textarea { display: block; width: 100%; margin-top: 0.3rem; border: 1.5px solid var(--line); border-radius: 12px; padding: 0.65rem 0.8rem; background: var(--bg); font-weight: 400; }
   .field textarea { resize: vertical; min-height: 64px; }
-  .hint { font-size: 0.9rem; color: var(--cafe-soft); margin: 0.6rem 0 0; }
-  [hidden] { display: none !important; }
+  .field input.invalid, .field textarea.invalid { border-color: var(--tomate); }
+  .hint { font-size: 0.9rem; color: var(--ink-soft); margin: 0.6rem 0 0; }
+  .error { margin: 0 0 0.8rem; color: var(--tomate); font-weight: 600; font-size: 0.95rem; }
 
-  /* Botones de opción (entrega y pago) */
   .group-label { font-weight: 600; font-size: 0.95rem; margin: 0 0 0.3rem; }
   .seg { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 0.5rem; margin-bottom: 0.9rem; }
   .seg label { position: relative; display: block; }
   .seg input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: pointer; }
-  .seg span {
-    display: flex; align-items: center; justify-content: center; text-align: center;
-    min-height: 50px; padding: 0.3rem 0.5rem;
-    border: 2px solid var(--cafe); border-radius: var(--radius); background: #fff;
-    font-weight: 700; line-height: 1.2;
-  }
+  .seg span { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 50px; padding: 0.3rem 0.5rem; border: 1.5px solid var(--line); border-radius: 12px; background: #fff; font-weight: 700; line-height: 1.2; }
   .seg input:checked + span { background: var(--hoja); border-color: var(--hoja); color: #fff; }
   .seg input:focus-visible + span { outline: 3px solid var(--hoja); outline-offset: 2px; }
-  .field input.invalid, .field textarea.invalid { border-color: var(--tomate); }
-  .error { margin: 0 0 0.8rem; color: var(--tomate); font-weight: 600; font-size: 0.95rem; }
 
   /* ---------- Barra móvil ---------- */
   .bar { display: none; }
   .backdrop { display: none; }
-  @media (max-width: 899px) {
-    .cart {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
-      max-height: 88vh; overflow-y: auto;
-      border-radius: 18px 18px 0 0; border-bottom: 0;
-      transform: translateY(105%);
-      visibility: hidden;
-      transition: transform .25s ease, visibility 0s .25s;
-    }
+  @media (max-width: 959px) {
+    .cart { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; max-height: 88vh; overflow-y: auto; border-radius: 22px 22px 0 0; border-bottom: 0; transform: translateY(105%); visibility: hidden; transition: transform .25s ease, visibility 0s .25s; }
     .cart.open { transform: none; visibility: visible; transition: transform .25s ease; }
     .cart-close { display: block; }
-    .backdrop.show { display: block; position: fixed; inset: 0; background: rgba(58,35,22,.5); z-index: 20; }
-    .bar {
-      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
-      padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
-      background: var(--cafe); color: #fff; align-items: center; justify-content: space-between; gap: 1rem;
-    }
-    .bar button { background: var(--platano); color: var(--cafe); border: 0; border-radius: var(--radius); min-height: 46px; padding: 0 1.2rem; font-weight: 700; cursor: pointer; }
+    .backdrop.show { display: block; position: fixed; inset: 0; background: rgba(23,38,30,.5); z-index: 20; }
+    .bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom)); background: var(--ink); color: #fff; align-items: center; justify-content: space-between; gap: 1rem; }
+    .bar button { background: var(--sol); color: var(--ink); border: 0; border-radius: 999px; min-height: 46px; padding: 0 1.3rem; font-weight: 700; cursor: pointer; }
     .bar span { font-weight: 600; }
   }
 
-  footer { text-align: center; padding: 0 1.25rem 7rem; color: var(--cafe-soft); font-size: 0.95rem; }
-  @media (min-width: 900px) { footer { padding-bottom: 2rem; } }
-
-  @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; }
-  }
+  footer { text-align: center; padding: 0 1.25rem 7rem; color: var(--ink-soft); font-size: 0.95rem; }
+  @media (min-width: 960px) { footer { padding-bottom: 2rem; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="sign">
+<header class="hero">
+  <div class="hero-in">
     <h1>Soda La Esquina</h1>
-    <p>Pintos y casados. Armá tu pedido y mandalo por WhatsApp.</p>
+    <p>Armá tu pedido y mandalo por WhatsApp.</p>
   </div>
-  <div class="tablecloth" aria-hidden="true"></div>
 </header>
+
+<nav class="cats" aria-label="Categorías del menú">
+  <div class="cats-in" id="cats"></div>
+</nav>
 
 <div class="wrap">
   <main id="menu" aria-label="Menú"></main>
@@ -230,6 +163,7 @@
     <p class="cart-empty" id="cart-empty">Tu pedido está vacío. Elegí un plato del menú.</p>
     <ul class="cart-list" id="cart-list"></ul>
     <div class="total"><span>Total</span><strong id="cart-total">₡0</strong></div>
+
     <label class="field">Tu nombre
       <input type="text" id="cust-name" autocomplete="name" placeholder="Para identificar tu pedido" required>
     </label>
@@ -272,27 +206,53 @@
 // Número de WhatsApp con código de país, sin + ni espacios (506 = Costa Rica).
 const WHATSAPP = "50663783156";
 
+const ICONS = {
+  // amanecer
+  sunrise: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 18a5.5 5.5 0 0 1 11 0"/><path d="M3 18h18M8 21.5h8M12 6v2.5M5.6 10.6l1.6 1.6M18.4 10.6l-1.6 1.6M3 14.5h2M19 14.5h2"/></svg>',
+  // plato con cubiertos (mediodía / almuerzo)
+  plate: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg>',
+  // vaso con pajilla
+  glass: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10l-1.2 12a2 2 0 0 1-2 1.8h-3.6a2 2 0 0 1-2-1.8L7 7z"/><path d="M7.7 12.5h8.6M13.5 7l1.8-4.5h2"/></svg>'
+};
+
 const SECTIONS = [
-  { id: "pintos",  title: "Pintos",  note: "Gallo pinto con su acompañamiento." },
-  { id: "casados", title: "Casados", note: "Arroz, frijoles y ensalada con la proteína que elijás." }
+  { id: "desayunos", title: "Desayunos y comidas rápidas", short: "Desayunos", icon: "sunrise" },
+  { id: "almuerzos", title: "Almuerzos",                    short: "Almuerzos", icon: "plate" },
+  { id: "bebidas",   title: "Bebidas",                      short: "Bebidas",   icon: "glass" }
 ];
 
+/* Cada producto puede llevar una foto: poné el archivo en la carpeta "img"
+   junto a este HTML con el nombre indicado en "img". Si no existe, se muestra un ícono. */
 const MENU = [
-  { id: "pinto-basico", section: "pintos", name: "Pinto básico",
-    desc: "Huevo y salchichón.", price: 1500 },
-  { id: "pinto-grande", section: "pintos", name: "Pinto grande",
-    desc: "Dos huevos, natilla, plátano maduro, salchichón y café.", price: 3000 },
-  // Precio de los casados: ajustalo al real (aquí está en 3500 como ejemplo).
-  { id: "casado-pollo",  section: "casados", name: "Casado con pollo",        desc: "Arroz, frijoles, ensalada y pollo.",        price: 3500 },
-  { id: "casado-pescado",section: "casados", name: "Casado con pescado",      desc: "Arroz, frijoles, ensalada y pescado.",      price: 3500 },
-  { id: "casado-mechada",section: "casados", name: "Casado con carne mechada",desc: "Arroz, frijoles, ensalada y carne mechada.",price: 3500 },
-  { id: "casado-chuleta",section: "casados", name: "Casado con chuleta",      desc: "Arroz, frijoles, ensalada y chuleta.",      price: 3500 }
+  // Desayunos y comidas rápidas
+  { id: "empanada-queso",  section: "desayunos", name: "Empanada de queso", desc: "", price: 1500, img: "img/empanada-queso.jpg" },
+  { id: "pinto",           section: "desayunos", name: "Pinto",             desc: "Gallo pinto con huevo y salchichón.", price: 1500, img: "img/pinto.jpg" },
+  { id: "arreglada",       section: "desayunos", name: "Arreglada",         desc: "", price: 1500, img: "img/arreglada.jpg" },
+  { id: "tortilla-queso",  section: "desayunos", name: "Tortilla de queso", desc: "", price: 1500, img: "img/tortilla-queso.jpg" },
+  { id: "chorreada",       section: "desayunos", name: "Chorreada",         desc: "", price: 1500, img: "img/chorreada.jpg" },
+  { id: "sandwich-pollo",  section: "desayunos", name: "Sándwich de pollo", desc: "", price: 2000, img: "img/sandwich-pollo.jpg" },
+  { id: "sandwich-carne",  section: "desayunos", name: "Sándwich de carne", desc: "", price: 2000, img: "img/sandwich-carne.jpg" },
+
+  // Almuerzos
+  { id: "casado-chuleta",  section: "almuerzos", name: "Casado con chuleta",                   desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-chuleta.jpg" },
+  { id: "casado-bistec",   section: "almuerzos", name: "Casado con bistec",                    desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-bistec.jpg" },
+  { id: "casado-pescado",  section: "almuerzos", name: "Casado con filete de pescado empanizado", desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-pescado.jpg" },
+  { id: "casado-salsa",    section: "almuerzos", name: "Casado con carne en salsa",            desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-salsa.jpg" },
+  { id: "casado-fajitas",  section: "almuerzos", name: "Casado con fajitas de pollo",          desc: "Arroz, frijoles y ensalada.", price: 3800, img: "img/casado-fajitas.jpg" },
+  { id: "plato-del-dia",   section: "almuerzos", name: "Plato del día",                        desc: "", price: 4000, img: "img/plato-del-dia.jpg" },
+
+  // Bebidas
+  { id: "fresco-natural",  section: "bebidas", name: "Fresco natural",  desc: "", price: 600,  img: "img/fresco-natural.jpg" },
+  { id: "cafe-negro",      section: "bebidas", name: "Café negro",      desc: "", price: 600,  img: "img/cafe-negro.jpg" },
+  { id: "cafe-leche",      section: "bebidas", name: "Café con leche",  desc: "", price: 800,  img: "img/cafe-leche.jpg" },
+  { id: "agua-dulce",      section: "bebidas", name: "Agua dulce",      desc: "", price: 800,  img: "img/agua-dulce.jpg" },
+  { id: "jugo-naranja",    section: "bebidas", name: "Jugo de naranja", desc: "", price: 1000, img: "img/jugo-naranja.jpg" }
 ];
 /* =========================================================== */
 
 const $ = (s) => document.querySelector(s);
 const byId = Object.fromEntries(MENU.map(m => [m.id, m]));
-const fmt = (n) => "₡" + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+const fmt = (n) => "₡" + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 let picks = {};   // cantidad elegida en cada tarjeta antes de agregar
 let cart = {};    // id -> cantidad
@@ -303,34 +263,44 @@ const save = () => { try { localStorage.setItem("soda-cart", JSON.stringify(cart
 
 /* ---------- Menú ---------- */
 function renderMenu() {
+  $("#cats").innerHTML = SECTIONS.map(s =>
+    `<a href="#sec-${s.id}">${ICONS[s.icon]}<span>${s.short}</span></a>`).join("");
+
   $("#menu").innerHTML = SECTIONS.map(sec => `
-    <section class="menu-section" aria-labelledby="h-${sec.id}">
-      <h2 id="h-${sec.id}">${sec.title}</h2>
-      <p class="section-note">${sec.note}</p>
-      ${MENU.filter(m => m.section === sec.id).map(m => `
-        <article class="dish" data-id="${m.id}">
-          <div class="dish-head">
-            <h3 class="dish-name">${m.name}</h3>
-            <span class="leader" aria-hidden="true"></span>
-            <span class="dish-price">${fmt(m.price)}</span>
-          </div>
-          <p class="dish-desc">${m.desc}</p>
-          <div class="dish-actions">
-            <div class="stepper" role="group" aria-label="Cantidad de ${m.name}">
-              <button type="button" data-act="dec" aria-label="Quitar una">−</button>
-              <output data-qty aria-live="polite">1</output>
-              <button type="button" data-act="inc" aria-label="Sumar una">+</button>
+    <section class="menu-section" id="sec-${sec.id}" aria-labelledby="h-${sec.id}">
+      <div class="sec-head">
+        <span class="sec-badge">${ICONS[sec.icon]}</span>
+        <h2 id="h-${sec.id}">${sec.title}</h2>
+      </div>
+      <div class="grid">
+        ${MENU.filter(m => m.section === sec.id).map(m => `
+          <article class="card" data-id="${m.id}">
+            <div class="thumb">
+              ${ICONS[sec.icon].replace('class="ico"', 'class="ico ph"')}
+              ${m.img ? `<img src="${m.img}" alt="${m.name}" loading="lazy" onerror="this.remove()">` : ""}
             </div>
-            <button type="button" class="btn" data-act="add">Agregar al pedido</button>
-          </div>
-        </article>`).join("")}
+            <div class="card-body">
+              <h3>${m.name}</h3>
+              ${m.desc ? `<p class="desc">${m.desc}</p>` : ""}
+              <div class="price">${fmt(m.price)}</div>
+              <div class="actions">
+                <div class="stepper" role="group" aria-label="Cantidad de ${m.name}">
+                  <button type="button" data-act="dec" aria-label="Quitar una">−</button>
+                  <output data-qty aria-live="polite">1</output>
+                  <button type="button" data-act="inc" aria-label="Sumar una">+</button>
+                </div>
+                <button type="button" class="btn" data-act="add">Agregar</button>
+              </div>
+            </div>
+          </article>`).join("")}
+      </div>
     </section>`).join("");
 }
 
 $("#menu").addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-act]");
   if (!btn) return;
-  const card = btn.closest(".dish");
+  const card = btn.closest(".card");
   const id = card.dataset.id;
   const qtyEl = card.querySelector("[data-qty]");
   let q = picks[id] || 1;
@@ -343,7 +313,7 @@ $("#menu").addEventListener("click", (e) => {
     btn.classList.add("added");
     btn.textContent = `Agregado (${q})`;
     q = 1;
-    setTimeout(() => { btn.classList.remove("added"); btn.textContent = "Agregar al pedido"; }, 1400);
+    setTimeout(() => { btn.classList.remove("added"); btn.textContent = "Agregar"; }, 1400);
   }
   picks[id] = q;
   qtyEl.textContent = q;
